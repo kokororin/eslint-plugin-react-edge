@@ -18,7 +18,7 @@ The standard TypeScript ESLint naming convention rule cannot distinguish between
   "@typescript-eslint/naming-convention": [
     "warn",
     {
-      "selector": "function", 
+      "selector": "function",
       "format": ["PascalCase", "camelCase"]
     }
   ]
@@ -33,7 +33,7 @@ The standard TypeScript ESLint naming convention rule cannot distinguish between
 const OnClick = () => { /* not a component */ }; // No warning!
 function ProcessData() { /* utility function */ }  // No warning!
 
-// ✅ Only React components should use PascalCase  
+// ✅ Only React components should use PascalCase
 const MyComponent = () => <div />; // This is correct
 ```
 

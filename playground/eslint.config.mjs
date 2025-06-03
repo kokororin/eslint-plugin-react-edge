@@ -11,6 +11,6 @@ export default tseslint.config(
     rules: {
       'react-edge/var-naming': 'error',
       'react-edge/prefer-named-property-access': 'error',
-    }
+    },
   },
 );
