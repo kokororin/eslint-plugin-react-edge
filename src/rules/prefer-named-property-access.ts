@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type { RuleContext, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../utils';

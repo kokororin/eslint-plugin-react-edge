@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import { createRule, isCamelCase, isPascalCase, isUpperCase } from '../utils';
 
 export const RULE_NAME = 'var-naming';
