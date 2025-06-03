@@ -56,22 +56,22 @@ export default [
 ];
 ```
 
-### Legacy Config (.eslintrc.json)
+### Legacy Config (.eslintrc.js)
 
-```json
-{
-  "plugins": ["react-edge"],
-  "rules": {
-    "react-edge/var-naming": ["error", {
-      "funcFormat": ["camelCase"],
-      "varFormat": ["camelCase", "UPPER_CASE"],
-      "excludeNames": [],
-      "excludeFuncs": [],
-      "excludeTypes": []
+```js
+module.exports = {
+  plugins: ['react-edge'],
+  rules: {
+    'react-edge/var-naming': ['error', {
+      funcFormat: ['camelCase'],
+      varFormat: ['camelCase', 'UPPER_CASE'],
+      excludeNames: [],
+      excludeFuncs: [],
+      excludeTypes: []
     }],
-    "react-edge/prefer-named-property-access": "error"
+    'react-edge/prefer-named-property-access': 'error'
   }
-}
+};
 ```
 
 ## Requirements

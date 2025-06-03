@@ -7,18 +7,18 @@ export type MessageIds = 'invalidFuncNaming' | 'invalidReactFCNaming' | 'invalid
 export type NamingFormat = 'camelCase' | 'PascalCase' | 'UPPER_CASE';
 
 export interface RuleOptions {
-  funcFormat: NamingFormat[]
-  varFormat: NamingFormat[]
-  excludeNames: string[]
-  excludeFuncs: string[]
-  excludeTypes: string[]
+  funcFormat: NamingFormat[];
+  varFormat: NamingFormat[];
+  excludeNames: string[];
+  excludeFuncs: string[];
+  excludeTypes: string[];
 }
 
 export type Options = [RuleOptions];
 
 interface ValidateParams {
-  node: TSESTree.Node
-  name: string
+  node: TSESTree.Node;
+  name: string;
 }
 
 type ValidateType = 'func' | 'var';
