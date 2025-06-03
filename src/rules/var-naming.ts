@@ -1,4 +1,5 @@
-import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isCamelCase, isPascalCase, isUpperCase } from '../utils';
 
 export const RULE_NAME = 'var-naming';
@@ -114,9 +115,9 @@ export default createRule<Options, MessageIds>({
 
     const funcFormat = options.funcFormat;
     const varFormat = options.varFormat;
-    const excludeNames = [...defaultExcludeNames, ...(options.excludeNames || [])];
+    const excludeNames = [...defaultExcludeNames, ...(options.excludeNames ?? [])];
     const excludeFuncs = options.excludeFuncs;
-    const excludeTypes = [...defaultExcludeTypes, ...(options.excludeTypes || [])];
+    const excludeTypes = [...defaultExcludeTypes, ...(options.excludeTypes ?? [])];
 
     function validate(type: ValidateType, { node, name }: ValidateParams): void {
       let isPass = false;
@@ -170,13 +171,13 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (node.type === 'JSXElement' || node.type === 'JSXFragment') {
+      if (node.type === AST_NODE_TYPES.JSXElement || node.type === AST_NODE_TYPES.JSXFragment) {
         return true;
       }
 
-      if (node.type === 'BlockStatement') {
+      if (node.type === AST_NODE_TYPES.BlockStatement) {
         for (const statement of node.body) {
-          if (statement.type === 'ReturnStatement') {
+          if (statement.type === AST_NODE_TYPES.ReturnStatement) {
             if (checkJSXElement(statement.argument)) {
               return true;
             }
@@ -188,8 +189,8 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        node.type === 'ArrowFunctionExpression'
-        || node.type === 'FunctionExpression'
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression
+        || node.type === AST_NODE_TYPES.FunctionExpression
       ) {
         return checkJSXElement(node.body);
       }
@@ -200,8 +201,8 @@ export default createRule<Options, MessageIds>({
     function getTypeReference(node: TSESTree.VariableDeclarator): string | undefined {
       if (
         node.id.typeAnnotation?.typeAnnotation
-        && node.id.typeAnnotation.typeAnnotation.type === 'TSTypeReference'
-        && node.id.typeAnnotation.typeAnnotation.typeName.type === 'Identifier'
+        && node.id.typeAnnotation.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference
+        && node.id.typeAnnotation.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier
       ) {
         const typeName = node.id.typeAnnotation.typeAnnotation.typeName.name;
         return typeName.split('.').pop();
@@ -222,9 +223,9 @@ export default createRule<Options, MessageIds>({
 
       VariableDeclarator(node: TSESTree.VariableDeclarator) {
         if (
-          node.id
+          node.id != null
           && node.init
-          && (node.init.type === 'FunctionExpression' || node.init.type === 'ArrowFunctionExpression')
+          && (node.init.type === AST_NODE_TYPES.FunctionExpression || node.init.type === AST_NODE_TYPES.ArrowFunctionExpression)
         ) {
           const fnName = ('name' in node.id) ? node.id.name : '';
           if (!fnName) {
@@ -234,7 +235,7 @@ export default createRule<Options, MessageIds>({
           let isReactComponent = checkJSXElement(node.init.body);
 
           const typeName = getTypeReference(node);
-          if (typeName && reactFCTypes.has(typeName)) {
+          if (typeName != null && reactFCTypes.has(typeName)) {
             isReactComponent = true;
           }
           if (!isReactComponent) {
@@ -242,9 +243,9 @@ export default createRule<Options, MessageIds>({
           }
         }
         else if (
-          node.id
+          node.id != null
           && node.init
-          && node.init.type === 'LogicalExpression'
+          && node.init.type === AST_NODE_TYPES.LogicalExpression
         ) {
           const varName = ('name' in node.id) ? node.id.name : '';
           if (!varName) {
@@ -255,7 +256,7 @@ export default createRule<Options, MessageIds>({
           let partIsReactComponent = false;
           for (const part of parts) {
             if (
-              part.type === 'FunctionExpression' || part.type === 'ArrowFunctionExpression'
+              part.type === AST_NODE_TYPES.FunctionExpression || part.type === AST_NODE_TYPES.ArrowFunctionExpression
             ) {
               const isReactComponent = checkJSXElement(part.body);
               if (isReactComponent) {
@@ -268,7 +269,7 @@ export default createRule<Options, MessageIds>({
             validate('var', { node, name: varName });
           }
         }
-        else if (node.id && 'name' in node.id) {
+        else if (node.id != null && 'name' in node.id) {
           const varName = node.id.name;
 
           for (const excludeRegex of excludeNames) {
@@ -278,7 +279,7 @@ export default createRule<Options, MessageIds>({
           }
 
           const typeName = getTypeReference(node);
-          if (typeName) {
+          if (typeName != null) {
             for (const excludeRegex of excludeTypes) {
               if (new RegExp(excludeRegex).test(typeName)) {
                 return;
@@ -291,31 +292,31 @@ export default createRule<Options, MessageIds>({
             let shouldCheckReact = false;
 
             let initNode: TSESTree.CallExpression | undefined;
-            if (node.init.type === 'CallExpression') {
+            if (node.init.type === AST_NODE_TYPES.CallExpression) {
               initNode = node.init;
             }
             else if (
-              node.init.type === 'TSAsExpression'
-              && node.init.expression
-              && node.init.expression.type === 'CallExpression'
+              node.init.type === AST_NODE_TYPES.TSAsExpression
+              && node.init.expression != null
+              && node.init.expression.type === AST_NODE_TYPES.CallExpression
             ) {
               initNode = node.init.expression;
             }
 
             if (initNode) {
               shouldCheckReact = true;
-              if (initNode.callee.type === 'Identifier') {
+              if (initNode.callee.type === AST_NODE_TYPES.Identifier) {
                 calleeName = initNode.callee.name;
               }
               else if (
-                initNode.callee.type === 'MemberExpression'
-                && initNode.callee.property.type === 'Identifier'
+                initNode.callee.type === AST_NODE_TYPES.MemberExpression
+                && initNode.callee.property.type === AST_NODE_TYPES.Identifier
               ) {
                 calleeName = initNode.callee.property.name;
               }
             }
 
-            if (calleeName) {
+            if (calleeName != null) {
               for (const excludeRegex of excludeFuncs) {
                 if (new RegExp(excludeRegex).test(calleeName)) {
                   return;
@@ -324,13 +325,13 @@ export default createRule<Options, MessageIds>({
             }
 
             if (shouldCheckReact) {
-              if (!calleeName) {
+              if (calleeName == null) {
                 return;
               }
 
               if (
                 reactGlobalFuncs.has(calleeName)
-                || reactGlobalFuncs.has(calleeName.split('.').pop() || '')
+                || reactGlobalFuncs.has(calleeName.split('.').pop() ?? '')
               ) {
                 return;
               }

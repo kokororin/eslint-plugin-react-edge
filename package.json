@@ -56,11 +56,11 @@
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.15.29",
     "@typescript-eslint/parser": "^8.33.1",
-    "@typescript-eslint/typescript-estree": "^8.33.1",
     "bumpp": "^10.1.1",
     "eslint": "^9.28.0",
     "eslint-vitest-rule-tester": "^2.0.0",
     "tsdown": "^0.12.5",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "vitest": "^3.2.0"
   }

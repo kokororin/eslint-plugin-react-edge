@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleContext, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../utils';
@@ -60,7 +60,7 @@ function* updateImportStatement(context: RuleContext<MessageIds, Options>, fixer
 
   // Named imports section is present and current key is not imported yet - add it to named imports section
   const lastSpecifier = importNode.specifiers[importNode.specifiers.length - 1];
-  if (!lastSpecifier) {
+  if (lastSpecifier == null) {
     // No last specifier - insert at the beginning
     yield fixer.insertTextBefore(
       sourceCode.ast.body[0],

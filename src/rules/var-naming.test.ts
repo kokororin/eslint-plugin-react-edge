@@ -155,7 +155,7 @@ const invalids = [
   },
 ];
 
-run({
+await run({
   name: RULE_NAME,
   rule,
   languageOptions: {

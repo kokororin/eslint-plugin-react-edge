@@ -1,17 +1,12 @@
 {
   "name": "playground",
   "private": true,
-  "scripts": {
-    "lint": "eslint ."
-  },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "eslint-plugin-react-edge": "workspace:*",
-    "typescript-eslint": "^8.33.1"
+    "@types/react-dom": "^19.1.5"
   }
 }

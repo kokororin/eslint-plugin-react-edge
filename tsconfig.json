@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
+    "jsx": "preserve",
     "lib": ["esnext"],
     "module": "esnext",
     "moduleResolution": "Bundler",
@@ -15,6 +16,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "src"
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }

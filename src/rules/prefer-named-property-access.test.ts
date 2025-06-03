@@ -29,7 +29,7 @@ const App: React.FC = () => <div />;`,
   },
 ];
 
-run({
+await run({
   name: RULE_NAME,
   rule,
   languageOptions: {
