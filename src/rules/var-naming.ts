@@ -181,8 +181,7 @@ export default createRule<Options, MessageIds>({
             if (checkJSXElement(statement.argument)) {
               return true;
             }
-          }
-          else if (checkJSXElement(statement)) {
+          } else if (checkJSXElement(statement)) {
             return true;
           }
         }
@@ -225,7 +224,8 @@ export default createRule<Options, MessageIds>({
         if (
           node.id != null
           && node.init
-          && (node.init.type === AST_NODE_TYPES.FunctionExpression || node.init.type === AST_NODE_TYPES.ArrowFunctionExpression)
+          && (node.init.type === AST_NODE_TYPES.FunctionExpression
+            || node.init.type === AST_NODE_TYPES.ArrowFunctionExpression)
         ) {
           const fnName = ('name' in node.id) ? node.id.name : '';
           if (!fnName) {
@@ -241,8 +241,7 @@ export default createRule<Options, MessageIds>({
           if (!isReactComponent) {
             validate('func', { node, name: fnName });
           }
-        }
-        else if (
+        } else if (
           node.id != null
           && node.init
           && node.init.type === AST_NODE_TYPES.LogicalExpression
@@ -268,8 +267,7 @@ export default createRule<Options, MessageIds>({
           if (!partIsReactComponent) {
             validate('var', { node, name: varName });
           }
-        }
-        else if (node.id != null && 'name' in node.id) {
+        } else if (node.id != null && 'name' in node.id) {
           const varName = node.id.name;
 
           for (const excludeRegex of excludeNames) {
@@ -294,8 +292,7 @@ export default createRule<Options, MessageIds>({
             let initNode: TSESTree.CallExpression | undefined;
             if (node.init.type === AST_NODE_TYPES.CallExpression) {
               initNode = node.init;
-            }
-            else if (
+            } else if (
               node.init.type === AST_NODE_TYPES.TSAsExpression
               && node.init.expression != null
               && node.init.expression.type === AST_NODE_TYPES.CallExpression
@@ -307,8 +304,7 @@ export default createRule<Options, MessageIds>({
               shouldCheckReact = true;
               if (initNode.callee.type === AST_NODE_TYPES.Identifier) {
                 calleeName = initNode.callee.name;
-              }
-              else if (
+              } else if (
                 initNode.callee.type === AST_NODE_TYPES.MemberExpression
                 && initNode.callee.property.type === AST_NODE_TYPES.Identifier
               ) {

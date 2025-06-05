@@ -38,6 +38,9 @@ pnpm add -D eslint-plugin-react-edge
 import eslintReactEdge from 'eslint-plugin-react-edge';
 
 export default [
+  // configuration included in plugin
+  ...reactEdge.configs.recommended,
+  // other configuration objects...
   {
     plugins: {
       'react-edge': eslintReactEdge,
@@ -54,24 +57,6 @@ export default [
     },
   },
 ];
-```
-
-### Legacy Config (.eslintrc.js)
-
-```js
-module.exports = {
-  plugins: ['react-edge'],
-  rules: {
-    'react-edge/var-naming': ['error', {
-      funcFormat: ['camelCase'],
-      varFormat: ['camelCase', 'UPPER_CASE'],
-      excludeNames: [],
-      excludeFuncs: [],
-      excludeTypes: []
-    }],
-    'react-edge/prefer-named-property-access': 'error'
-  }
-};
 ```
 
 ## Requirements

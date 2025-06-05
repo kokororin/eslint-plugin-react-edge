@@ -1,27 +1,39 @@
-import type { Linter } from 'eslint';
-import { version } from '../package.json';
-import * as preferNamedPropertyAccess from './rules/prefer-named-property-access';
-import * as varNaming from './rules/var-naming';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { name, version } from '../package.json';
+import { rules } from './rules';
 
-const plugin = {
+const reactEdge: TSESLint.FlatConfig.Plugin = {
   meta: {
-    name: 'react-edge',
+    name,
     version,
   },
-  rules: {
-    [preferNamedPropertyAccess.RULE_NAME]: preferNamedPropertyAccess.default,
-    [varNaming.RULE_NAME]: varNaming.default,
-  },
+  rules,
 };
 
-type RuleDefinitions = typeof plugin['rules'];
+const allRules: Record<string, TSESLint.FlatConfig.RuleEntry> = Object.fromEntries(
+  Object.keys(rules).map(name => [
+    `react-edge/${name}`,
+    'error',
+  ]),
+);
 
-export type RuleOptions = {
-  [K in keyof RuleDefinitions]: RuleDefinitions[K]['defaultOptions']
+const configs = {
+  recommended: createConfig(allRules, 'react-edge/recommended'),
 };
 
-export type Rules = {
-  [K in keyof RuleOptions]: Linter.RuleEntry<RuleOptions[K]>
+function createConfig(rules: TSESLint.FlatConfig.Rules, configName: string) {
+  return {
+    name: configName,
+    plugins: {
+      'react-edge': reactEdge,
+    },
+    rules,
+  };
+}
+
+const allConfigs = {
+  ...reactEdge,
+  configs,
 };
 
-export default plugin;
+export default allConfigs;
